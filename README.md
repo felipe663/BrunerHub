@@ -12,7 +12,7 @@ local flyBaseSpeed = 50
 
 local speedhackEnabled, speedMultiplier = false, 2
 local noclipEnabled, noclipConnection = false, nil
-local superJumpEnabled, jumpMultiplier, jumpConnection = false, 2.5, nil
+local superJumpEnabled, jumpMultiplier, jumpConnection = false, 2.0, nil
 
 -- Referências para os personagens atuais
 local character = nil
@@ -129,7 +129,7 @@ local function toggleSuperJump()
     superJumpEnabled = not superJumpEnabled
     
     if superJumpEnabled then
-        -- Ativar super pulo - 2.5x
+        -- Ativar super pulo - 2.0x
         if humanoid then
             humanoid.JumpPower = 50 * jumpMultiplier
             print("Super Jump ATIVADO - JumpPower: " .. humanoid.JumpPower)
@@ -432,8 +432,8 @@ local function createTeleportInterface()
 
     local mainFrame = Instance.new("Frame", teleportGui)
     mainFrame.Name = "MainFrame"
-    mainFrame.Size = UDim2.new(0, 400, 0, 300)
-    mainFrame.Position = UDim2.new(0.42, 0, 0.24, 0)
+    mainFrame.Size = UDim2.new(0, 350, 0, 250)
+    mainFrame.Position = UDim2.new(0.5, -175, 0.5, -125)
     mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     mainFrame.BackgroundTransparency = 0.15
     mainFrame.BorderSizePixel = 0
@@ -444,7 +444,7 @@ local function createTeleportInterface()
     uiCorner.CornerRadius = UDim.new(0, 8)
 
     local titleBar = Instance.new("Frame", mainFrame)
-    titleBar.Size = UDim2.new(1, 0, 0, 35)
+    titleBar.Size = UDim2.new(1, 0, 0, 30)
     titleBar.Position = UDim2.new(0, 0, 0, 0)
     titleBar.BackgroundColor3 = Color3.fromRGB(75, 0, 130)
     titleBar.BorderSizePixel = 0
@@ -455,7 +455,7 @@ local function createTeleportInterface()
     local titleLabel = Instance.new("TextLabel", titleBar)
     titleLabel.Size = UDim2.new(1, -40, 1, 0)
     titleLabel.Position = UDim2.new(0, 10, 0, 0)
-    titleLabel.Text = "TELEPORTAR PARA PLAYER"
+    titleLabel.Text = "TELEPORTAR"
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     titleLabel.TextSize = 14
     titleLabel.Font = Enum.Font.GothamBold
@@ -463,21 +463,16 @@ local function createTeleportInterface()
 
     local closeButton = Instance.new("TextButton", titleBar)
     closeButton.Size = UDim2.new(0, 30, 0, 25)
-    closeButton.Position = UDim2.new(1, -35, 0, 5)
+    closeButton.Position = UDim2.new(1, -35, 0, 2)
     closeButton.Text = "X"
     closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     closeButton.TextSize = 14
-    closeButton.Font = Enum.Font.GothamBold
-    closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    closeButton.BackgroundTransparency = 0.2
-    closeButton.BorderSizePixel = 0
-    
     local closeCorner = Instance.new("UICorner", closeButton)
     closeCorner.CornerRadius = UDim.new(0, 6)
 
     local refreshButton = Instance.new("TextButton", mainFrame)
-    refreshButton.Size = UDim2.new(0, 120, 0, 35)
-    refreshButton.Position = UDim2.new(0.5, -60, 0, 45)
+    refreshButton.Size = UDim2.new(0, 120, 0, 30)
+    refreshButton.Position = UDim2.new(0.5, -60, 0, 40)
     refreshButton.Text = "ATUALIZAR 🔄"
     refreshButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     refreshButton.TextSize = 14
@@ -489,31 +484,28 @@ local function createTeleportInterface()
     local refreshCorner = Instance.new("UICorner", refreshButton)
     refreshCorner.CornerRadius = UDim.new(0, 6)
 
-    local menuFrame = Instance.new("Frame", mainFrame)
-    menuFrame.Name = "MenuFrame"
-    menuFrame.Size = UDim2.new(0, 370, 0, 150)
-    menuFrame.Position = UDim2.new(0.5, -185, 0, 90)
-    menuFrame.BackgroundTransparency = 1
-    menuFrame.BorderSizePixel = 0
-
-    local scrollPlayers = Instance.new("ScrollingFrame", menuFrame)
-    scrollPlayers.Size = UDim2.new(0.7, 0, 1, 0)
-    scrollPlayers.Position = UDim2.new(0, 0, 0, 0)
-    scrollPlayers.BackgroundTransparency = 1
+    local scrollPlayers = Instance.new("ScrollingFrame", mainFrame)
+    scrollPlayers.Size = UDim2.new(0, 320, 0, 120)
+    scrollPlayers.Position = UDim2.new(0.5, -160, 0, 80)
+    scrollPlayers.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    scrollPlayers.BackgroundTransparency = 0.5
     scrollPlayers.BorderSizePixel = 0
     scrollPlayers.CanvasSize = UDim2.new(0, 0, 0, 0)
     scrollPlayers.ScrollBarThickness = 6
+    
+    local scrollCorner = Instance.new("UICorner", scrollPlayers)
+    scrollCorner.CornerRadius = UDim.new(0, 6)
 
     local layout = Instance.new("UIListLayout", scrollPlayers)
     layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 8)
+    layout.Padding = UDim.new(0, 5)
 
     local selectedPlayer = nil
 
-    -- Botão de teleporte ao lado da lista
-    local teleportBtn = Instance.new("TextButton", menuFrame)
-    teleportBtn.Size = UDim2.new(0, 100, 0, 40)
-    teleportBtn.Position = UDim2.new(0.75, 10, 0.5, -20)
+    -- Botão de teleporte
+    local teleportBtn = Instance.new("TextButton", mainFrame)
+    teleportBtn.Size = UDim2.new(0, 120, 0, 35)
+    teleportBtn.Position = UDim2.new(0.5, -60, 0, 210)
     teleportBtn.Text = "TELEPORTAR"
     teleportBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     teleportBtn.TextSize = 14
@@ -535,11 +527,12 @@ local function createTeleportInterface()
             if p ~= player then
                 count = count + 1
                 local btn = Instance.new("TextButton", scrollPlayers)
-                btn.Size = UDim2.new(1, 0, 0, 35)
+                btn.Size = UDim2.new(1, -10, 0, 30)
+                btn.Position = UDim2.new(0, 5, 0, (count-1)*35)
                 btn.Text = p.DisplayName .. " ("..p.Name..")"
                 btn.TextColor3 = Color3.fromRGB(255, 255, 255)
                 btn.TextSize = 12
-                btn.Font = Enum.Font.GothamBold
+                btn.Font = Enum.Font.Gotham
                 btn.BackgroundColor3 = selectedPlayer == p and Color3.fromRGB(0, 128, 0) or Color3.fromRGB(75, 0, 130)
                 btn.BackgroundTransparency = 0.2
                 btn.BorderSizePixel = 0
@@ -557,7 +550,7 @@ local function createTeleportInterface()
                 end)
             end
         end
-        scrollPlayers.CanvasSize = UDim2.new(0, 0, 0, count * 43)
+        scrollPlayers.CanvasSize = UDim2.new(0, 0, 0, count * 35)
     end
 
     refreshButton.MouseButton1Click:Connect(refreshPlayers)
@@ -587,7 +580,7 @@ local function createMainInterface()
     local mainContainer = Instance.new("Frame", mainGui)
     mainContainer.Name = "MainContainer"
     mainContainer.Size = UDim2.new(0, 200, 0, 250)
-    mainContainer.Position = UDim2.new(0.12, 0, 0.32, 0)
+    mainContainer.Position = UDim2.new(0.12, 0, 0.15, 0)  -- Alterado para abrir mais para cima
     mainContainer.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     mainContainer.BackgroundTransparency = 0.15
     mainContainer.BorderSizePixel = 0
